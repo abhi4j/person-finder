@@ -1,11 +1,19 @@
 <?php
 include("db.php");
 $name=$_REQUEST['name'];
-$cont=$_REQUEST['phone'];
-$result=mysql_query("SELECT * FROM information WHERE pname='$name'");
+$mail=$_REQUEST['email'];
+$yname=$_REQUEST['yname'];
+$result=mysql_query("SELECT * FROM information WHERE uname = '$name' ");
 
+	if (mysql_num_rows(result) == 0) {
+		
+		$seek=mysql_query("INSERT into seeker (searchname,yourname,email)
+			VALUES ('$name','$yname','$email')");
+		header('Location:nullresult.php');
+	}
 
-?><!doctype html>
+?>
+<!doctype html>
 <head>
 <title>Result</title>
 <style type="text/css">
@@ -59,25 +67,31 @@ body {
 <table border="2" align="center" cellpadding="5px" cellspacing="5px" class="style3">
 <tr>
 <th>Serial No. </th>
+<th>Photo</td>
 <th>Name</th>
 <th>Description</th>
 <th>Current Location</th>
+<th>Who uploaded</td>
 <th>Contact</th>
 </tr>
 <?php
+	$count = 1;
 while($row=mysql_fetch_array($result))
 {
 ?>
 <tr>
-<td><?=$row['serial']?></td>
-<td><?=$row['pname']?></td>
+<td><?=$count?></td>
+<td><img src="<?=$row['photo']?>"></td>
+<td><?=$row['uname']?></td>
 <td><?=$row['appearance']?></td>
 <td><?=$row['location']?></td>
+<td><?=$row['pname']?></td>
 <td><?=$row['contact']?></td>
 <?php
+	$count++;
 }
 ?>
 </table>
-<center>
+</center>
 </body>
 </html>
