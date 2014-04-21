@@ -3,13 +3,19 @@ include("db.php");
 $name=$_REQUEST['name'];
 $mail=$_REQUEST['email'];
 $yname=$_REQUEST['yname'];
-$result=mysql_query("SELECT * FROM information WHERE uname = '$name' ");
+$result=mysql_query("SELECT * FROM information WHERE pname = '$name' ");
 
-	if (mysql_num_rows(result) == 0) {
+	if (mysql_num_rows($result) == 0) {
 		
-		$seek=mysql_query("INSERT into seeker (searchname,yourname,email)
-			VALUES ('$name','$yname','$email')");
-		header('Location:nullresult.php');
+		$query=mysql_query("INSERT into person_finder.noresult (Serial,searchname,yourname,email)
+			VALUES ('','$name','$yname','$mail')");
+		if ($query){
+			header('Location:nullresult.php');
+		}
+		else{
+			echo "Query failure";
+		}
+		
 	}
 
 ?>
@@ -81,11 +87,11 @@ while($row=mysql_fetch_array($result))
 ?>
 <tr>
 <td><?=$count?></td>
-<td><img src="<?=$row['photo']?>"></td>
-<td><?=$row['uname']?></td>
+<td><img src="<?=$row['photo']?>" height="100px" width="100px"></td>
+<td><?=$row['pname']?></td>
 <td><?=$row['appearance']?></td>
 <td><?=$row['location']?></td>
-<td><?=$row['pname']?></td>
+<td><?=$row['uname']?></td>
 <td><?=$row['contact']?></td>
 <?php
 	$count++;
